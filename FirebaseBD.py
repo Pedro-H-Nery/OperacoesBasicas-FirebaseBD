@@ -4,37 +4,32 @@ BD = "https://bancodedadosteste-7ea86-default-rtdb.firebaseio.com/"
 
 def cadastrar(nome, cpf, email, senha):
     if(buscaChave(email,senha)!=None):
-        print("Usuario ja cadastrado!")
-        return;
+        return "Usuário já cadastrado!"
     usuario = '{"Nome": '+f'"{nome}"'+', "CPF": '+f'"{cpf}"'+', "Email": '+f'"{email}"'+', "Senha": '+f'"{senha}"'+'}'
     requisicao = requests.post(BD+'.json', data=usuario)
     if(requisicao.status_code!=200):
-        print("Erro ao cadastrar!")
-        return;
-    print("Usuario cadastrado com sucesso!")
+        return "Erro ao cadastrar!"
+    return "Usuário cadastrado com sucesso!"
 
 def alterar(nome, cpf, email, senha):
     chave = buscaChave(email,senha)
     if(chave!=None):
         alteracao = '{"Nome":'+f'"{nome}"'+', "CPF":'+f'"{cpf}"'+'}'
         requisicao = requests.patch(BD+chave+".json", data=alteracao)
-        print("Usuario alterado com sucesso!")
-        return;
-    print("Usuario ou senha incorretos!")
+        return "Usuario alterado com sucesso!"
+    return "Usuario ou senha incorretos!"
 
 def deletar(email,senha):
     chave = buscaChave(email,senha)
     if(chave!=None):
         requisicao = requests.delete(BD+chave+".json")
-        print("Usuario deletado com sucesso!")
-        return;
-    print("Usuario ou senha incorretos!")
+        return "Usuario deletado com sucesso!"
+    return "Usuario ou senha incorretos!"
 
-def login(email,senha):
+def buscar(email,senha):
     if(buscaChave(email,senha)!=None):
-        print("Logado com sucesso!")
-        return;
-    print("Usuario ou senha incorretos!")
+        return "Usuário encontrado!"
+    return "Usuario ou senha incorretos!"
 
 def buscaChave(email,senha):
     requisicao = requests.get(BD+'.json')
@@ -45,9 +40,9 @@ def buscaChave(email,senha):
             return chave
     return None
 
-#cadastrar("Jubileu", "01010101010", "jubileu@email.com", "senha123")
-#login("jubileu@email.com", "senha123")
-#alterar("Jubilinho", "02020202020", "jubileu@email.com", "senha123")
-#deletar("jubileu@email.com", "senha123")
-#print(buscaChave("jubileu@email.com", "senha123"))
-
+if __name__ == "__main__":
+    #cadastrar("Jubileu", "01010101010", "jubileu@email.com", "senha123")
+    buscar("jubileu@email.com", "senha123")
+    #alterar("Jubilinho", "02020202020", "jubileu@email.com", "senha123")
+    #deletar("jubileu@email.com", "senha123")
+    #print(buscaChave("jubileu@email.com", "senha123"))
